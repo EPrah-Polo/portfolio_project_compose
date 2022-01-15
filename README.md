@@ -37,3 +37,9 @@ I originally chose to use an ORM  in order to become more familiar with it. Howe
 
 I would like to make an easy to use web interface/frontend for a singing instructor and a portal for students to use and review the feedback on their training. I would also attempt to optimize the database further and work on best practices for database security.
 </p>
+
+### Dockerization
+
+<p>
+I am in the middle of turning this application into a Docker container.
+</p>
