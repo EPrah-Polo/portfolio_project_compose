@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  web:
+    build: ./app
+    command: python app.py runserver 0.0.0.0:5000
+    volumes:
+      - ./app/:/usr/src/app/
+    ports:
+      - 5000:5000
+    environment:
+      - DB_NAME=nc_portfolio_db
+      - DB_USER=postgres
+      - DB_PASSWORD=admin123
+      - DB_HOST=pg
+      - DB_PORT=5432
+      - DATABASE=my_sing_course
+    depends_on:
+      - pg
+  pg:
+    container_name: pg_container2
+    image: postgres:13.2-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: admin123
+      POSTGRES_DB: my_sing_course
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/data
+      - ./data/misc/my_sing_course_init.sql:/docker-entrypoint-initdb.d/1-my-sing-course-init.sql
+  pgadmin:
+    container_name: pgadmin_container2
+    image: dpage/pgadmin4:5.2
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+      PGADMIN_LISTEN_PORT: 5433
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_CONFIG_MASTER_PASSWORD_REQUIRED: "False"
+    ports:
+      - "5433:5433"
+    depends_on:
+      - pg
