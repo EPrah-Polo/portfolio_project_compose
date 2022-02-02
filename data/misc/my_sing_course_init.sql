@@ -10,8 +10,13 @@
 SELECT pg_terminate_backend(pg_stat_activity.pid)
 FROM pg_stat_activity
 WHERE pg_stat_activity.datname = 'my_sing_course' AND pid <> pg_backend_pid();
+-- Disconnect from database
+\c postgres
+-- Example of adding Role to database:
+--CREATE ROLE postgres with PASSWORD '$(DB_PASSWORD)';
+--\password postgres
 -- (re)create the database
-DROP DATABASE IF EXISTS my_sing_course;
+DROP DATABASE IF EXISTS my_sing_course WITH (FORCE);
 CREATE DATABASE my_sing_course;
 -- connect via psql
 \c my_sing_course

@@ -1,11 +1,10 @@
-# Edward Prah - Portfolio Project - My Sing Course database
-from flask_sqlalchemy import SQLAlchemy
-import datetime
-
-from sqlalchemy.dialects.postgresql.base import TIMESTAMP
-
-db = SQLAlchemy()
-
+#Add below back when done testing
+# from app import db
+#----------------------------------------------------------------------------#
+# Models.
+#----------------------------------------------------------------------------#
+#Migrate
+#migrate = Migrate(app, db)
 # Reference:
 # https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/
 # https://docs.sqlalchemy.org/en/14/core/metadata.html#sqlalchemy.schema.Column
@@ -106,33 +105,3 @@ class Progress(db.Model):
     feedback = db.Column(db.String(128), unique=False, nullable=True)
     exercise_id = db.Column(db.Integer, db.ForeignKey('exercises.id'), nullable=False)
     students_progress = db.relationship('Students', secondary=students_progress, lazy='subquery', cascade="all,delete", backref=db.backref('progress', lazy=True))
-    
-# # Many to Many Relationship classes below
-
-# class Students_Enrolled(db.Model):
-#     __tablename__ = 'students_enrolled'
-#     student_id = db.Column(db.Integer, nullable=False)
-#     course_id = db.Column(db.Integer, nullable=False)
-#     #https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/#many-to-many-relationships
-
-
-# class Students_Exercises(db.Model):
-#     __tablename__ = 'students_exercises'
-#     student_id = db.Column(db.Integer, nullable=False)
-#     exercise_id = db.Column(db.Integer, nullable=False)
-#     # https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/#many-to-many-relationships tuple
- 
-# class Courses_Exercises(db.Model):
-#     __tablename__ = 'courses_exercises'
-#     exercise_id = db.Column(db.Integer, nullable=False)
-#     course_id = db.Column(db.Integer, nullable=False)
-#     #https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/#many-to-many-relationships tuple
-
-# class Students_Progress(db.Model):
-#     __tablename__ = 'students_progress'
-#     student_id = db.Column(db.Integer, nullable=False)
-#     progress_id = db.Column(db.Integer, nullable=False)
-#     #https://flask-sqlalchemy.palletsprojects.com/en/2.x/models/#many-to-many-relationships tuple
-
-
-
