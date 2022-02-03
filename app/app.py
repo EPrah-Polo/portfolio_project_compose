@@ -4,12 +4,13 @@ from flask import Flask, jsonify
 from config_default import ProductionConfig, DevelopmentConfig, TestingConfig
 from flask_sqlalchemy import SQLAlchemy
 from student_blueprint import students_bp
+from main_blueprint import web_main_bp
 
 #----------------------------------------------------------------------------#
 # App Config.
 #----------------------------------------------------------------------------#
-app = Flask(__name__)
-
+#app = Flask(__name__)
+app = Flask(__name__, template_folder= "templates")
 #Load config file
 if app.config["ENV"] == "production":
     app.config.from_object("config_default.ProductionConfig")
@@ -23,12 +24,13 @@ else:
 #print(f'ENV is set to: {app.config["ENV"]}')
 # Register Blueprint    
 app.register_blueprint(students_bp)
+app.register_blueprint(web_main_bp)
 
-@app.route('/')
-def index():
-    return "This is a example app."
-    # return jsonify({'name': 'alice',
-    #                 'email': 'alice@outlook.com'})
+# @app.route('/')
+# def index():
+#     return "This is a example app."
+#     # return jsonify({'name': 'alice',
+#     #                 'email': 'alice@outlook.com'})
 #print(app.config)
 # ADD THE DATABASE CONNECTION TO THE FLASK APP
 db  = SQLAlchemy(app)

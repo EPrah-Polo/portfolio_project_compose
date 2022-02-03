@@ -30,8 +30,8 @@ db_port = 5432
 # Connect to database using psycopg2
 #----------------------------------------------------------------------------#
 
-time.sleep(30)
-print("30 seconds has passed. Has the server.json file been imported into pgadmin?...if so - Connect to Database via psycopg2")
+time.sleep(15)
+print("15 seconds has passed. Has the server.json file been imported into pgadmin?...if so - Connect to Database via psycopg2")
 conn = psycopg2.connect(
     """
     dbname=%s user=%s host=%s port=%d
@@ -87,12 +87,13 @@ def index():
         return jsonify(True, results) # return JSON response
     except Exception as e:
         # something went wrong :(
+        conn.rollback()
         return jsonify(False, " Something went wrong :(")
 
 #----------------------------------------------------------------------------#  
 # Blueprint to query for a (1) specific student
 #----------------------------------------------------------------------------#  
-@students_bp.route('/<int:id>', methods=['GET'])
+@students_bp.route('/<int:id>/', methods=['GET'])
 def show(id: int):
     try:
         cur.execute(
@@ -125,12 +126,13 @@ def show(id: int):
     except Exception as e:
         # something went wrong :(
         print(e)
+        conn.rollback()
         return jsonify(False, " Something went wrong :(")
 
 #----------------------------------------------------------------------------#  
 # Blueprint to query all user accounts
 #----------------------------------------------------------------------------#  
-@students_bp.route('/user_accounts', methods=['GET']) # decorator takes path and list of HTTP verbs
+@students_bp.route('/user_accounts/', methods=['GET']) # decorator takes path and list of HTTP verbs
 def index_accounts():
     try:
         cur.execute(
@@ -157,6 +159,7 @@ def index_accounts():
     except Exception as e:
         # something went wrong :(
         print(e)
+        conn.rollback()
         return jsonify(False, " Something went wrong :(")
 
 #----------------------------------------------------------------------------#  
@@ -179,7 +182,7 @@ def create():
             results = cur.statusmessage
             #print(results)
             #removed commit below - from psycopg2
-            #cur.commit()
+            conn.commit()
             #cur.close()
             #conn.close()
             #message = results
@@ -190,10 +193,11 @@ def create():
     except Exception as e:
         # something went wrong :(
         print(e)
+        conn.rollback()
         return jsonify(False, " Something went wrong :(")
 
 # Add a user account for a student
-@students_bp.route('/user_account/new', methods=['POST'])
+@students_bp.route('/user_account/new/', methods=['POST'])
 def new_account():
     try:
         if 'username' not in request.json or 'password' not in request.json or 'student_id' not in request.json:
@@ -207,7 +211,7 @@ def new_account():
         )
         results = cur.statusmessage
         print(results)
-        cur.commit()
+        conn.commit()
         #cur.close()
         #conn.close()
         # message = results
@@ -216,10 +220,11 @@ def new_account():
     except Exception as e:
         # something went wrong :(
         print(e)
+        conn.rollback()
         return jsonify(False, " Something went wrong :(")
 
 # Update Student's user account and password
-@students_bp.route('/update_account/<int:id>', methods=['PATCH'])
+@students_bp.route('/update_account/<int:id>/', methods=['PATCH'])
 def update(id: int):
     try:
         if 'id' not in request.json or 'username' not in request.json or 'password' not in request.json or 'student_id' not in request.json:
@@ -235,7 +240,7 @@ def update(id: int):
         )
         results = cur.statusmessage
         print(results)
-        cur.commit()
+        conn.commit()
         #cur.close()
         #conn.close()
         # message = results
@@ -244,10 +249,11 @@ def update(id: int):
     except Exception as e:
         # something went wrong :(
         print(e)
+        conn.rollback()
         return jsonify(False, " Something went wrong :(")
 
 # Delete Student from students table
-@students_bp.route('/<int:id>', methods=['DELETE'])
+@students_bp.route('/<int:id>/', methods=['DELETE'])
 def remove_student(id: int):
     try:
         cur.execute(
@@ -260,13 +266,14 @@ def remove_student(id: int):
         )
         results = cur.statusmessage
         print(results)
-        cur.commit()
+        conn.commit()
         # message = results
         # _logger.info(message)
         return jsonify(True, " Student succesfully deleted.<br/>Returning status message: ", results)
     except Exception as e:
         # something went wrong :(
         print(e)
+        conn.rollback()
         return jsonify(False, " Something went wrong :(")
 
 # Delete Student from students table
@@ -277,6 +284,7 @@ def close_connection():
         return jsonify(True)
     except Exception as e:
         print(e)
+        conn.rollback()
         return jsonify(False)
 
         

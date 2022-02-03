@@ -20,7 +20,9 @@ WORKDIR /code
 COPY ./data/server/nucamp_server.json /home/pgadmin/
 
 USER root
-RUN chown pgadmin:pgadmin /home/pgadmin/nucamp_server_backup.json
+RUN chown pgadmin4:pgadmin4 /pgadmin4/servers.json
+
+USER pgadmin4
 #COPY . /usr/src/app/
 # Creates a non-root user with an explicit UID and adds permission to access the /app folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
