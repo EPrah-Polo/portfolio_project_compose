@@ -33,7 +33,7 @@ class TestingConfig(Config):
 class Config(object):
     DEBUG = False
     TESTING = False
-    SECRET_KEY = "dev"
+    SECRET_KEY = os.environ.get('SECRET_KEY') or "\x877\xa5\x00\xf3\x13F\xb3\xb3o\x9c\xd55t\xf9\x9a\xcboAaq\x92\xa1B" 
 
     DB_NAME=db_name
     DB_USERNAME=db_user
