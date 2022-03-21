@@ -1,0 +1,14 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "nucamp",
+            "Group": "Server Group 1",
+            "Port": 5432,
+            "Username": "postgres",
+            "Host": "pg",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "postgres",
+            "Role": "postgres"
+        }
+    }
+}

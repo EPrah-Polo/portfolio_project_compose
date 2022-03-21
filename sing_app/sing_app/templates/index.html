@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div id="index_content" align="center">
+    {% if current_user.is_anonymous %}
+    <h1>Hello!</h1>
+    {% else %}
+    <h1>Hi, {{ current_user.username }}!</h1>
+    {% endif %}  
+    {% for post in posts %}
+    <div>
+        <p>{{ post.author.username }} says: <b>{{ post.body }}</b></p>
+    </div>
+{% endfor %}
+<img src="{{url_for('static', filename='pexels-photo-1154053.jpeg')}}" />
+</div>
+{% endblock %}
